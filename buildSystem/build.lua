@@ -1,7 +1,10 @@
+function glfw_include()
+    local baseFolder = debug.getinfo(1,'S').source:match("^@(.+)/buildSystem/build.lua$")
+    includedirs { path.join(baseFolder, "include") }
+end
+
 function glfw_project()
-    --baseFolder = path.getdirectory(debug.getinfo(1,'S').source)
-    --baseFolder = path.getdirectory(baseFolder)
-    baseFolder = debug.getinfo(1,'S').source:match("^@(.+)/buildSystem/build.lua$")
+    local baseFolder = debug.getinfo(1,'S').source:match("^@(.+)/buildSystem/build.lua$")
 
     project "glfw"
         kind "StaticLib"
@@ -13,6 +16,8 @@ function glfw_project()
         {
             path.join(baseFolder, "include/GLFW/*.h"),
             path.join(baseFolder, "src/context.c"),
+            path.join(baseFolder, "src/platform.c"),
+            path.join(baseFolder, "src/null_*.c"),
             path.join(baseFolder, "src/egl_context.*"),
             path.join(baseFolder, "src/init.c"),
             path.join(baseFolder, "src/input.c"),
@@ -62,9 +67,4 @@ function glfw_project()
         
         filter "action:vs*"
             defines "_CRT_SECURE_NO_WARNINGS"
-end
-
-function glfw_include()
-    baseFolder = debug.getinfo(1,'S').source:match("^@(.+)/buildSystem/build.lua$")
-    return path.join(baseFolder, "include")
 end
