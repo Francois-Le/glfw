@@ -3,7 +3,8 @@ function glfw_include()
     includedirs { path.join(baseFolder, "include") }
 end
 
-function glfw_project()
+function glfw_project(options)
+    options = options or {}
     local baseFolder = debug.getinfo(1,'S').source:match("^@(.+)/buildSystem/build.lua$")
 
     project "glfw"
@@ -67,4 +68,8 @@ function glfw_project()
         
         filter "action:vs*"
             defines "_CRT_SECURE_NO_WARNINGS"
+
+        if options.dependson then
+            dependson { options.dependson }
+        end
 end
